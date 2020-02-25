@@ -9,7 +9,7 @@ async function slowReview(request, owner, repo, {label}) {
   const results = []
 
   if (label) {
-    const labelRegex = new RegExp(label.replace('/*/g', '.*'), 'i')
+    const labelRegex = new RegExp(label.replace(/\*/g, '.*'), 'i')
     pulls = pulls.filter(pull => {
       for (label of pull.labels.map(label => label.name)) {
         if (labelRegex.test(label)) {
