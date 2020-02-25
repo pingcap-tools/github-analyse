@@ -1,0 +1,28 @@
+{
+  "name": "github-analyse",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "you06",
+  "license": "null",
+  "private": true,
+  "scripts": {
+    "build": "pkg app.js --targets node10-macos-x64 --output github-analyse",
+    "build-all": "yarn build-darwin && yarn build-linux",
+    "build-darwin": "pkg app.js --targets node10-macos-x64 --output bin/github-analyse-darwin",
+    "build-linux": "pkg app.js --targets node10-linux-x64 --output bin/github-analyse-linux",
+    "test": "./test.sh"
+  },
+  "dependencies": {
+    "@octokit/rest": "^16.28.7",
+    "@slack/web-api": "^5.1.0",
+    "axios": "^0.19.0",
+    "commander": "^3.0.0",
+    "confluence-api": "^1.4.0"
+  },
+  "pkg": {
+    "scripts": "*.js"
+  },
+  "devDependencies": {
+    "pkg": "^4.4.0"
+  }
+}

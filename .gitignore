@@ -1,0 +1,12 @@
+node_modules
+config.json
+exec.sh
+.vscode
+filter.txt
+repos.txt
+bin
+repos-tidb.txt
+run.sh
+test.sh
+*list.txt
+template.txt

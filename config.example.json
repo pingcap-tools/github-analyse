@@ -1,0 +1,9 @@
+{
+  "token": "your github token",
+  "slack": "slack token if used",
+  "confluence": {
+    "username": "",
+    "password": "",
+    "endpoint": ""
+  }
+}
