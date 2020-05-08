@@ -11,6 +11,7 @@ const pullsConfluence = require('./pulls-confluence')
 const reviewReport = require('./pulls-confluence-review')
 const openedPulls = require('./opened-pull')
 const slowReview = require('./slow-review')
+const findUncherryPick = require('./find-uncherry-pick')
 const { combineContributor } = require('./utils')
 
 const {
@@ -208,6 +209,13 @@ async function main() {
       await slowReview(new Request(config), owner, repo, {
         label
       })
+      break
+    }
+    case 'find-uncherry-pick': {
+      await findUncherryPick(new Request(config), owner, repo, {
+        channel
+      })
+      break
     }
     default:
       console.log(`unsupported workload. ${workload}`)

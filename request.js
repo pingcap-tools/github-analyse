@@ -356,7 +356,8 @@ module.exports.request = class {
   async postSlackReport(channel, title, text) {
     const res = await this.slack.chat.postMessage({
       channel,
-      text: `${title}\n\`\`\`${text}\`\`\``
+      text: `${title}\n\`\`\`${text}\`\`\``,
+      mrkdwn: true
     })
     return res.ok
   }

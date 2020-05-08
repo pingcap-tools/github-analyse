@@ -82,7 +82,8 @@ async function getNewContributor(request, owner, repo, {
     // const url = `https://github.com/${owner}/${repo}/pulls?q=is%3Amerged+is%3Apr+author%3A${user.login}`
     // const line = `${user.login}, ${user.merged}, ${user.count}, ${url}\n`
     // fs.writeFileSync(file, line, {flag: 'a'})
-    const line = `* [${user.login}](https://github.com/${user.login}), email:${user.email}`
+    const isMember = await request.retry(request.isMember, user.login)
+    const line = `* [${user.login}](https://github.com/${user.login}), email:${user.email}, employee:${isMember ? '√' : 'x'}`
     res.push(line)
   }
   const contributorText = res.join('\n') || `No new contributors`

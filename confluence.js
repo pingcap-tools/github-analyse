@@ -34,11 +34,16 @@ module.exports = class {
         }
       }
     }
+    const token = Buffer.from(`${this.username}:${this.password}`, 'utf8').toString('base64')
+
     const res = await axios.post(url, data, {
       method: 'post',
       auth: {
         username: this.username,
         password: this.password
+      },
+      headers: {
+        Authorization: token
       }
     })
     return res
