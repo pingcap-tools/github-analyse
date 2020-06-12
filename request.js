@@ -354,9 +354,39 @@ module.exports.request = class {
   }
 
   async postSlackReport(channel, title, text) {
+    const lines = text.split('\n')
+    const groups = [[]]
+    for (let i = 0; i < lines.length; i++) {
+      if ((i + 1) % 10 == 0) {
+        groups.push([lines[i]])
+      } else {
+        groups[groups.length - 1].push(lines[i])
+      }
+    }
+    const blocks = groups.map(lines => {
+      let content = lines.join('\n')
+      if (content === '') content = '\n'
+      return {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: `\`\`\`${content}\`\`\``
+        }
+      }
+    })
+
     const res = await this.slack.chat.postMessage({
       channel,
-      text: `${title}\n\`\`\`${text}\`\`\``,
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'plain_text',
+            text: title
+          }
+        },
+        ...blocks
+      ],
       mrkdwn: true
     })
     return res.ok

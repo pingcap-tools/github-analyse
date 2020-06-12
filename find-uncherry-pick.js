@@ -13,17 +13,16 @@ async function findUncherryPick(request, owner, repo, {
   let reports = []
 
   for (const masterPull of masterPulls) {
-    console.log(masterPull.number)
     for (const needCherryPick of matchlabels(masterPull.labels)) {
       const release = releaseStart + needCherryPick
       const titlePattern = `#${masterPull.number}`
       const cherryPickPR = pulls.find(i => {
-        if (!i.base.ref !== release) {
+        if (!(i.base.ref === release)) {
           return false
         }
-        const fromPullMatch = /\(.*\)$/.exec(i.title.trim())
+        const fromPullMatch = /.*\((.*)\)$/.exec(i.title.trim())
         let fromPulls = ''
-        if (fromPullMatch) fromPulls = fromPullMatch[0]
+        if (fromPullMatch) fromPulls = fromPullMatch[1]
         return fromPulls.split(',').map(c => c.trim()).includes(titlePattern)
       })
       if (cherryPickPR === undefined) {
@@ -35,10 +34,9 @@ async function findUncherryPick(request, owner, repo, {
 
   const report = reports.join('\n')
 
-  if (channel && channel !== '') {
+  if (channel == '#github-weekly-report' || channel && channel !== '') {
     await request.retry(request.postSlackReport, channel, `Uncherry pick ${owner}/${repo}`, report)
-  }
-   else {
+  } else {
     console.log(report)
   }
 }
@@ -65,7 +63,7 @@ async function findReviewer(r, owner, repo, pullNumber) {
   if (isMember) {
     return pull.user.login
   }
-  const reviews = await r.getPullReviews('pingcap', 'tidb', pullNumber, 1)
+  const reviews = await r.getPullReviews(owner, repo, pullNumber, 1)
   for (const review of reviews) {
     if (review.author_association === 'MEMBER' || reviews.author_association === 'OWNER') {
       return review.user.login
