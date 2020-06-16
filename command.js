@@ -7,6 +7,7 @@ module.exports = (program) => {
   .option('-w, --workload <string>', `workload name`)
   .option('-o, --owner <string>', 'github account login name')
   .option('-r, --repo <string>', 'github repository name')
+  .option('-c, --config <string>', 'config file')
   .option('--label, --label <string>', 'specify a label')
   .option('--channel <string>', `Slack channel which will receive report, default ${DEFAULT_CHANNEL}`)
   .option('--contributor <boolean>', 'if only works for contributor, for pulls statistic, default false')

@@ -1,7 +1,8 @@
+const readFileSync = require('util').promisify(require('fs').readFile)
 const program = require('commander')
+
 const Request = require('./request').request
 const Filter = require('./filter')
-const config = require('./config.json')
 const commandWrapper = require('./command')
 const getNewContributor = require('./get-new-contributors')
 const pullsReport = require('./pulls-report')
@@ -27,6 +28,7 @@ program.parse(process.argv)
 main()
 
 async function main() {
+  const config = JSON.parse(await readFileSync(program.config || './config.json', 'utf-8'))
   const workload = program.workload
   const owner = program.owner
   const repo = program.repo
